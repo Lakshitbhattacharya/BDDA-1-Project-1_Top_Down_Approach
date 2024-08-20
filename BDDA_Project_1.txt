@@ -1,0 +1,281 @@
+BDDA - 1 (Project - 1)
+
+Organization Name - 
+Lemon tree Hotel
+Top Down Approach 
+
+
+
+SUBMITTED TO: PROF. ASHOK HARNAL
+ BATCH: BDA-04
+SECTION: H
+
+
+Group Members -
+Ansh Loomba - 045009
+Lakshit Bhattacharya - 045028
+Nishita Yadav - 045036
+
+
+Codes for creating the Database and the Tables 
+
+CREATE DATABASE lemontree;
+use lemontree
+
+> To Create table named Rooms:
+CREATE TABLE Rooms (
+    RoomID INT PRIMARY KEY AUTO_INCREMENT,
+    RoomNumber VARCHAR(10),
+    RoomType VARCHAR(20),
+    PricePerNight DECIMAL(10, 2),
+    AvailabilityStatus BOOLEAN,
+    FloorNumber INT,
+    ViewType VARCHAR(50),
+    BedType VARCHAR(50),
+    MaxOccupancy INT
+);
+
+> To Create table named Guests:
+
+CREATE TABLE Guests (
+    GuestID INT PRIMARY KEY AUTO_INCREMENT,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Email VARCHAR(100),
+    PhoneNumber VARCHAR(15),
+    Address VARCHAR(255),
+    CheckInDate DATE,
+    CheckOutDate DATE,
+    RoomID INT,
+    FOREIGN KEY (RoomID) REFERENCES Rooms(RoomID)
+);
+
+> To Create table named Bookings:
+
+CREATE TABLE Bookings (
+    BookingID INT PRIMARY KEY AUTO_INCREMENT,
+    GuestID INT,
+    RoomID INT,
+    BookingDate DATE,
+    CheckInDate DATE,
+    CheckOutDate DATE,
+    TotalAmount DECIMAL(10, 2),
+    PaymentStatus VARCHAR(20),
+    BookingStatus VARCHAR(20),
+    FOREIGN KEY (GuestID) REFERENCES Guests(GuestID),
+    FOREIGN KEY (RoomID) REFERENCES Rooms(RoomID)
+);
+
+> To create table named Departments:
+
+CREATE TABLE Departments (
+    DepartmentID INT PRIMARY KEY AUTO_INCREMENT,
+    DepartmentName VARCHAR(50),
+    ManagerID INT,
+    Location VARCHAR(100),
+    PhoneExtension VARCHAR(10),
+    Email VARCHAR(100)
+);
+
+> To create table named Employees:
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY AUTO_INCREMENT,
+    FirstName VARCHAR(50),
+    LastName VARCHAR(50),
+    Position VARCHAR(50),
+    DepartmentID INT,
+    Email VARCHAR(100),
+    PhoneNumber VARCHAR(15),
+    HireDate DATE,
+    Salary DECIMAL(10, 2),
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID)
+    );
+
+> To create table named Suppliers:
+  
+CREATE TABLE Suppliers (
+    SupplierID INT PRIMARY KEY AUTO_INCREMENT,
+    SupplierName VARCHAR(100),
+    ContactPerson VARCHAR(50),
+    PhoneNumber VARCHAR(15),
+    Email VARCHAR(100),
+    Address VARCHAR(255)
+);    
+
+> To create table named Inventory:
+
+CREATE TABLE Inventory (
+    ItemID INT PRIMARY KEY AUTO_INCREMENT,
+    ItemName VARCHAR(50),
+    Category VARCHAR(50),
+    Quantity INT,
+    SupplierID INT,
+    ReorderLevel INT,
+    StorageLocation VARCHAR(100),
+    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
+);
+
+> To create table named Services:
+
+CREATE TABLE Services (
+    ServiceID INT PRIMARY KEY AUTO_INCREMENT,
+    ServiceName VARCHAR(50),
+    Price DECIMAL(10, 2),
+    ServiceDescription VARCHAR(255),
+    AvailableTime VARCHAR(50),
+    DepartmentID INT,
+    EmployeeID INT,
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID),
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
+);
+
+> To Create table named Maintenance:
+
+CREATE TABLE Maintenance (
+    MaintenanceID INT PRIMARY KEY AUTO_INCREMENT,
+    RoomID INT,
+    IssueDescription VARCHAR(255),
+    ReportedDate DATE,
+    ResolvedDate DATE,
+    AssignedEmployeeID INT,
+    MaintenanceStatus VARCHAR(50),
+    FOREIGN KEY (RoomID) REFERENCES Rooms(RoomID),
+    FOREIGN KEY (AssignedEmployeeID) REFERENCES Employees(EmployeeID)
+);
+
+> To create table named Finance:
+
+CREATE TABLE Finance (
+    TransactionID INT PRIMARY KEY AUTO_INCREMENT,
+    TransactionDate DATE,
+    Amount DECIMAL(10, 2),
+    TransactionType VARCHAR(20),
+    DepartmentID INT,
+    Description VARCHAR(255),
+    PaymentMethod VARCHAR(50),
+    ApprovedByEmployeeID INT,
+    FOREIGN KEY (DepartmentID) REFERENCES Departments(DepartmentID),
+    FOREIGN KEY (ApprovedByEmployeeID) REFERENCES Employees(EmployeeID)
+);
+
+> To Insert some demo values in these tables
+
+Use lemontree;
+1. Insert into Rooms Table
+INSERT INTO Rooms (RoomNumber, RoomType, PricePerNight, AvailabilityStatus, FloorNumber, ViewType, BedType, MaxOccupancy)
+VALUES 
+('101', 'Single', 5000.00, TRUE, 1, 'City View', 'Queen', 2),
+('102', 'Double', 7000.00, TRUE, 1, 'Pool View', 'King', 4),
+('201', 'Suite', 12000.00, FALSE, 2, 'Ocean View', 'King', 4),
+('202', 'Single', 5000.00, TRUE, 2, 'Garden View', 'Queen', 2),
+('301', 'Suite', 15000.00, FALSE, 3, 'City View', 'King', 4);
+
+2. Insert into Guests Table
+INSERT INTO Guests (FirstName, LastName, Email, PhoneNumber, Address, CheckInDate, CheckOutDate, RoomID)
+VALUES 
+('John', 'Doe', 'john.doe@example.com', '9876543210', '123 Elm Street, Delhi', '2024-08-01', '2024-08-05', 1),
+('Jane', 'Smith', 'jane.smith@example.com', '9876543211', '456 Oak Avenue, Delhi', '2024-08-03', '2024-08-07', 2),
+('Robert', 'Johnson', 'robert.johnson@example.com', '9876543212', '789 Pine Road, Delhi', '2024-08-04', '2024-08-10', 3),
+('Emily', 'Davis', 'emily.davis@example.com', '9876543213', '101 Maple Street, Delhi', '2024-08-05', '2024-08-09', 4),
+('Michael', 'Wilson', 'michael.wilson@example.com', '9876543214', '202 Birch Lane, Delhi', '2024-08-06', '2024-08-11', 5);
+
+3. Insert into Bookings Table
+INSERT INTO Bookings (GuestID, RoomID, BookingDate, CheckInDate, CheckOutDate, TotalAmount, PaymentStatus, BookingStatus)
+VALUES 
+(1, 1, '2024-07-25', '2024-08-01', '2024-08-05', 20000.00, 'Paid', 'Confirmed'),
+(2, 2, '2024-07-26', '2024-08-03', '2024-08-07', 28000.00, 'Paid', 'Confirmed'),
+(3, 3, '2024-07-27', '2024-08-04', '2024-08-10', 72000.00, 'Pending', 'Confirmed'),
+(4, 4, '2024-07-28', '2024-08-05', '2024-08-09', 20000.00, 'Paid', 'Confirmed'),
+(5, 5, '2024-07-29', '2024-08-06', '2024-08-11', 75000.00, 'Paid', 'Confirmed');
+
+ 4. Insert into Departments Table
+INSERT INTO Departments (DepartmentName, ManagerID, Location, PhoneExtension, Email)
+VALUES 
+('Front Desk', NULL, 'Lobby', '101', 'frontdesk@lemontree.com'),
+('Housekeeping', NULL, '1st Floor', '102', 'housekeeping@lemontree.com'),
+('Food & Beverage', NULL, 'Ground Floor', '103', 'fnb@lemontree.com'),
+('Maintenance', NULL, 'Basement', '104', 'maintenance@lemontree.com'),
+('Finance', NULL, '2nd Floor', '105', 'finance@lemontree.com');
+
+INSERT INTO Employees (FirstName, LastName, Position, DepartmentID, Email, PhoneNumber, HireDate, Salary)
+VALUES 
+('Alice', 'Brown', 'Manager', 1, 'alice.brown@lemontree.com', '9876543215', '2023-01-15', 75000.00),
+('David', 'White', 'Housekeeper', 2, 'david.white@lemontree.com', '9876543216', '2023-02-20', 35000.00),
+('Sophia', 'Moore', 'Chef', 3, 'sophia.moore@lemontree.com', '9876543217', '2023-03-10', 50000.00),
+('James', 'Taylor', 'Technician', 4, 'james.taylor@lemontree.com', '9876543218', '2023-04-25', 40000.00),
+('Emma', 'Harris', 'Accountant', 5, 'emma.harris@lemontree.com', '9876543219', '2023-05-30', 60000.00);
+
+INSERT INTO Suppliers (SupplierName, ContactPerson, PhoneNumber, Email, Address)
+VALUES 
+('Fresh Produce Co.', 'Mark Green', '9876543220', 'mark.green@freshproduce.com', '12 Market Street, Delhi'),
+('Linen World', 'Lisa Adams', '9876543221', 'lisa.adams@linenworld.com', '34 Textile Road, Delhi'),
+('Clean & Shine', 'Tom Martin', '9876543222', 'tom.martin@cleanandshine.com', '56 Cleaning Avenue, Delhi'),
+('Luxury Furnishings', 'Nancy Clark', '9876543223', 'nancy.clark@luxuryfurnishings.com', '78 Comfort Street, Delhi'),
+('Tech Repairs', 'Henry Evans', '9876543224', 'henry.evans@techrepairs.com', '90 Maintenance Lane, Delhi');
+
+
+INSERT INTO Inventory (ItemName, Category, Quantity, SupplierID, ReorderLevel, StorageLocation)
+VALUES 
+('Tomatoes', 'Food', 100, 1, 20, 'Kitchen'),
+('Bed Sheets', 'Linen', 50, 2, 10, 'Housekeeping Storage'),
+('Cleaning Solution', 'Cleaning Supplies', 30, 3, 5, 'Janitor Closet'),
+('Luxury Sofas', 'Furniture', 10, 4, 2, 'Lobby Storage'),
+('Repair Tools', 'Maintenance', 15, 5, 5, 'Maintenance Room');
+
+INSERT INTO Services (ServiceName, Price, ServiceDescription, AvailableTime, DepartmentID, EmployeeID)
+VALUES 
+('Spa', 3000.00, 'Relaxing full-body massage', '09:00 AM - 09:00 PM', 3, 3),
+('Gym', 1500.00, 'Access to fitness equipment and personal training', '06:00 AM - 10:00 PM', 3, NULL),
+('Laundry', 500.00, 'Professional laundry service', '08:00 AM - 08:00 PM', 2, 2),
+('Room Service', 200.00, 'In-room dining service', '24 Hours', 3, 3),
+('Housekeeping', 0.00, 'Daily room cleaning service', '10:00 AM - 04:00 PM', 2, 2);
+
+
+INSERT INTO Maintenance (RoomID, IssueDescription, ReportedDate, ResolvedDate, AssignedEmployeeID, MaintenanceStatus)
+VALUES 
+(1, 'Air conditioner not working', '2024-08-02', '2024-08-03', 4, 'Resolved'),
+(2, 'Leaky faucet in bathroom', '2024-08-04', '2024-08-05', 4, 'Resolved'),
+(3, 'TV not functioning', '2024-08-05', '2024-08-06', 4, 'Resolved'),
+(4, 'Broken window latch', '2024-08-07', NULL, 4, 'Pending'),
+(5, 'Lighting issue in room', '2024-08-08', NULL, 4, 'Pending');
+
+INSERT INTO Finance (TransactionDate, Amount, TransactionType, DepartmentID, Description, PaymentMethod, ApprovedByEmployeeID)
+VALUES 
+('2024-08-01', 20000.00, 'Revenue', 1, 'Room booking payment', 'Credit Card', 1),
+('2024-08-02', 5000.00, 'Expense', 3, 'Food supplies purchase', 'Cash', 3),
+('2024-08-03', 7000.00, 'Expense', 2, 'Linen purchase', 'Bank Transfer', 2),
+('2024-08-04', 15000.00, 'Revenue', 1, 'Room booking payment', 'Credit Card', 1),
+('2024-08-05', 4000.00, 'Expense', 4, 'Maintenance tools purchase', 'Cheque', 4);
+
+> To Give access permissions to some employees out of this database so that they can access and grant changes if they are allowed to do so.
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON lemontree.Employees TO 'manager_alice'@'127.0.0.1';
+GRANT SELECT, INSERT, UPDATE, DELETE ON lemontree.Finance TO 'manager_alice'@'127.0.0.1';
+GRANT SELECT, INSERT, UPDATE, DELETE ON lemontree.Departments TO 'manager_alice'@'127.0.0.1';
+
+-- Grant read access to Employee David on Guests table
+GRANT SELECT ON lemontree.Guests TO 'employee_david'@'127.0.0.1';
+
+-- Grant insert and update permissions on Bookings table to Employee David
+GRANT INSERT, UPDATE ON lemontree.Bookings TO 'employee_david'@'127.0.0.1';
+
+-- Grant read and insert permissions on Inventory and Maintenance tables to Employee David
+GRANT SELECT, INSERT ON lemontree.Inventory TO 'employee_david'@'127.0.0.1';
+GRANT SELECT, INSERT ON lemontree.Maintenance TO 'employee_david'@'127.0.0.1';
+
+
+FLUSH PRIVILEGES;
+
+
+
+
+
+
+
+
+
+
+
+ERD Diagram
+
+
